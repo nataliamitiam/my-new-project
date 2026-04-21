@@ -1,6 +1,7 @@
 import { Bars4Icon } from "@heroicons/react/24/outline";
 import { HeroIcon } from "../HeroIcon";
 import { useState } from "react";
+import { NavLinks } from "../../components/NavLinks";
 export default function Navbar() {
     const [mobileMenuisOpen, setMobileMenuIsOpen] = useState(false);
     return (
@@ -20,10 +21,10 @@ export default function Navbar() {
 
                     {/* Nav Links */}
                     <div className="lg:block md:block hidden flex items-center space-x-8">
-                        <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">Features</a>
-                        <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">Pricing</a>
-                        <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">About</a>
-                        <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">Testimonials</a>
+                        <NavLinks>Features</NavLinks>
+                        <NavLinks>Pricing</NavLinks>
+                        <NavLinks>About</NavLinks>
+                        <NavLinks>Testimonials</NavLinks>
                     </div>
 
                     <div className="lg:hidden">
