@@ -2,10 +2,11 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { codeExamples } from "../../Data/CodeExample";
 import SyntaxHighlighter from "react-syntax-highlighter";
+import { FloatingCard } from "../../components/cards/FloatingCard";
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [activeTab] = useState("App.tsx");
+  const [activeTab, setActiveTab] = useState("App.tsx");
 
   useEffect(() => {
     function handleMouseMove(e) {
@@ -21,8 +22,6 @@ export default function Hero() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
-  console.log("activeeTab", activeTab);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center">
@@ -62,7 +61,7 @@ export default function Hero() {
               <div className="flex space-x-1 sm:space-x-2 mb-3 sm:mb-4 overflow-x-auto">
               <button
               onClick={() => {
-                // setActiveTab("App.tsx");
+                setActiveTab("App.tsx");
               }}
                 className={`px-3 py-2 backdrop-blur-sm text-xs sm:text-sm rounded-t-lg border ${activeTab === 'App.tsx' ? 'bg-white/5' : 'hover:bg-white/10 text-gray-300'}`} 
                 transition-all duration-200 whitespace-nowrap
@@ -71,7 +70,7 @@ export default function Hero() {
               </button> 
               <button 
               onClick={() => {
-                // setActiveTab("Navbar.tsx");
+                setActiveTab("Navbar.tsx");
               }}
                 className={`px-3 py-2 backdrop-blur-sm text-xs sm:text-sm rounded-t-lg border ${activeTab === 'Navbar.tsx' ? 'bg-white/5' : 'hover:bg-white/10 text-gray-300'}`} 
                 transition-all duration-200 whitespace-nowrap
@@ -80,7 +79,7 @@ export default function Hero() {
               </button>
               <button 
               onClick={() => {
-                // setActiveTab("Hero.tsx");
+                setActiveTab("Hero.tsx");
               }}
                 className={`px-3 py-2 backdrop-blur-sm text-xs sm:text-sm rounded-t-lg border ${activeTab === 'Hero.tsx' ? 'bg-white/5' : 'hover:bg-white/10 text-gray-300'}`} 
                 transition-all duration-200 whitespace-nowrap
@@ -107,19 +106,16 @@ export default function Hero() {
           </div>
            {/*Floating Cards*/}
            <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-4">
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-white/10 w-64">
-              <h3 className="text-sm font-semibold text-gray-300 mb-2">AI Suggestions</h3>
-              <p className="text-xs text-gray-400">Get real-time code suggestions and improvements.</p>
+           <FloatingCard title="AI Suggestions">
+             Get real-time code suggestions and improvements.
+           </FloatingCard>
+           <FloatingCard title="Error Detection">
+              Identify and fix errors as you code.
+            </FloatingCard>
+           <FloatingCard title="Smart Completion">
+              Dynamic code examples that update with your interactions.
+            </FloatingCard>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-white/10 w-64">
-              <h3 className="text-sm font-semibold text-gray-300 mb-2">Error Detection</h3>
-              <p className="text-xs text-gray-400">Identify and fix errors as you code.</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-white/10 w-64">
-              <h3 className="text-sm font-semibold text-gray-300 mb-2">Smart Completion</h3>
-              <p className="text-xs text-gray-400">Dynamic code examples that update with your interactions.</p>
-            </div>
-           </div>
       </div>
     </section>
   );

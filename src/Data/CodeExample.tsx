@@ -1,70 +1,37 @@
 
 export const codeExamples = {
   "App.tsx": `
-import { useState } from "react";
-import { CodeFlow } from "@codeflow/ai";
 
-function App() {
-  const [code, setCode] = useState("");
-
-  const handleAICompletion = async () => {
-    const suggestion = await CodeFlow.complete(code);
-    setCode(suggestion);
-  };
-
+  const App = () => {
   return (
-    <div className="app">
-      <CodeEditor
-        onChange={setCode}
-        onAI={handleAICompletion}
-      />
+    <div>
+    This is a simple React component that demonstrates how to use the CodeFlow AI library to get code suggestions in real-time.
+    The component maintains a piece of state called "code" which represents the current code in the editor. When the user triggers the AI completion (e.g., by clicking a button), the handleAICompletion function is called, which uses the CodeFlow.complete method to get a suggestion based on the current code. The suggested code is then set back into the state, which can be displayed in the code editor.
     </div>
-  );
-}
+    )
+  }
 `,
 
 "Hero.tsx": `
-import { useState } from "react";
-import { CodeFlow } from "@codeflow/ai";
-
-function App() {
-  const [code, setCode] = useState("");
-
-  const handleAICompletion = async () => {
-    const suggestion = await CodeFlow.complete(code);
-    setCode(suggestion);
-  };
-
+const Hero = () => {
   return (
-    <div className="app">
-      <CodeEditor
-        onChange={setCode}
-        onAI={handleAICompletion}
-      />
-    </div>
-  );
+  <div>
+    This is a Hero component that showcases dynamic code examples. It uses the useState hook to manage the active tab state, allowing users to switch between different code examples (e.g., App.tsx, Navbar.tsx, Hero.tsx). The SyntaxHighlighter component is used to display the code with syntax highlighting. The code examples are stored in an object called codeExamples, which maps each tab name to its corresponding code snippet. When a user clicks on a tab, the activeTab state is updated, and the corresponding code example is displayed in the SyntaxHighlighter.
+  </div>
+  )
 }
 `,
 
 "Navbar.tsx": `
-import { useState } from "react";
-import { CodeFlow } from "@codeflow/ai";
-
-function App() {
-  const [code, setCode] = useState("");
-
-  const handleAICompletion = async () => {
-    const suggestion = await CodeFlow.complete(code);
-    setCode(suggestion);
-  };
-
+const Navbar = () => {
   return (
-    <div className="app">
-      <CodeEditor
-        onChange={setCode}
-        onAI={handleAICompletion}
-      />
-    </div>
+    <nav>
+      <ul>
+        <li><a href="#app">App</a></li>
+        <li><a href="#hero">Hero</a></li>
+        <li><a href="#navbar">Navbar</a></li>
+      </ul>
+    </nav>
   );
 }
 `
