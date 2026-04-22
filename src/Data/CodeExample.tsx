@@ -1,8 +1,7 @@
 
 export const codeExamples = {
   "App.tsx": `
-
-  const App = () => {
+const App = () => {
   return (
     <div>
     This is a simple React component that demonstrates how to use the CodeFlow AI library to get code suggestions in real-time.
