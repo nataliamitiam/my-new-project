@@ -9,7 +9,7 @@ const mobileMenuItems = ["Features", "Pricing", "About", "Testimonials"];
 export default function Navbar() {
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
     return (
-        <nav className="fixed top-0 w-full z-50 transition-all duration-300 bg-red-950/20 backdrop-blur-sm border-b">
+        <nav className=" top-0 w-full z-50 transition-all duration-300 bg-red-950/20 backdrop-blur-sm border-b">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
 

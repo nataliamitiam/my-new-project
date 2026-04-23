@@ -12,20 +12,37 @@
     animation-name: slideInFromTop;
   }
 
+.slide-in-from-bottom {
+    animation-name: slideInFromBottom;
+  }
+
  .duration-00 {
     animation-duration: 200ms;
   }
 }
 
-  .duration-300 {
-    animation-duration: 300ms;
+ .duration-700 {
+    animation-duration: 700ms;
+  } 
+
+.delay-100 {
+    animation-delay: 100ms;
+  }
+
+.delay-200 {
+    animation-delay: 200ms;
+  }
+
+.delay-300 {
+    animation-delay: 300ms;
   }
 
 
-@keyframes slideInFromTop {
+
+@keyframes slideInFromBottom {
   from {
     opacity: 0;
-    transform: translateY(-1rem);
+    transform: translateY(1rem);
   }
 
   to {
@@ -33,6 +50,8 @@
     transform: translateY(0);
   }
 }
+
+  
 
 :root {
   --text: #6b6375;
