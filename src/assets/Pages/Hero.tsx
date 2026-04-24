@@ -2,13 +2,14 @@ import { ChevronDownIcon, SparklesIcon, ArrowRightIcon, PlayIcon } from "@heroic
 import { useEffect, useState } from "react";
 import { codeExamples, floatingCards } from "../../Data/CodeExample";
 import SyntaxHighlighter from "react-syntax-highlighter";
+import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [activeTab, setActiveTab] = useState("App.tsx");
+  const [activeTab, setActiveTab] = useState<keyof typeof floatingCards>("App.tsx");
 
   useEffect(() => {
-    function handleMouseMove(e) {
+    function handleMouseMove(e: MouseEvent) {
       setMousePosition({
         x: e.clientX,
         y: e.clientY,
@@ -64,11 +65,11 @@ export default function Hero() {
 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 animate-in slide-in-from-bottom duration-700 delay-300">
   <button type="button" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-blue-500 text-white">
     <span>Start Coding Free</span>
-    <ArrowRightIcon className="w-4 h-4" />
+    <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
   </button>
 
-  <button type="button" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full border border-white/10 text-white">
-    <PlayIcon className="w-4 h-4" />
+  <button type="button" className="inline-flex items-center justify-center gap-2 px-4 py-3 bg:white/5 backdrop-blur-sm rounded-lg border border-white/10 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:bg-white/10">
+    <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
     <span>Watch Demo</span>
   </button>
 </div>
@@ -130,16 +131,16 @@ export default function Hero() {
 
               {/*code content*/}
               <div className="relative overflow-hidden flex-grow">
-                <SyntaxHighlighter language="javascript" style={{ nightowl: "vs2015" }} 
+                <SyntaxHighlighter language="javascript" style={vs2015}
                 customStyle={{ margin: 0,
-                  borderradius: "8px",
-                  fontSize: "11px", 
+                  borderRadius: "8px",
+                  fontSize: "11px",
                   lineHeight: "1.4",
                   height: "100%",
                   border: "1px solid #c3c3c3c",
                   width: "100%" }}
                 className="h-full w-full">
-                 {codeExamples[activeTab] || "Not Found"}
+                 {codeExamples[activeTab as keyof typeof codeExamples] || "Not Found"}
                 </SyntaxHighlighter>
               </div>
             </div>
