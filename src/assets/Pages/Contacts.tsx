@@ -1,27 +1,12 @@
 import { useState, useEffect } from "react";
 import { ContactServices } from "../../services/ContactServices";
-import type { ContactViewModel } from "../../models/Contacts";
+import { contactsDefaultValue, type ContactViewModel } from "../../models/Contacts";
 
 export function Contacts() {
+
   const [contacts, setContacts] = useState<any[]>([]);
-
-  const [createData, setCreateData] = useState<ContactViewModel>({
-    id: 0,
-    firstname: '',
-    lastname: '',
-    email: '',
-    phone: '',
-    birthDate: ''
-  });
-
-  const [updateData, setUpdateData] = useState<ContactViewModel>({
-    id: 0,
-    firstname: '',
-    lastname: '',
-    email: '',
-    phone: '',
-    birthDate: ''
-  });
+  const [createData, setCreateData] = useState<ContactViewModel>(contactsDefaultValue);
+  const [updateData, setUpdateData] = useState<ContactViewModel>(contactsDefaultValue);
 
   const [selectedContactId, setSelectedContactId] = useState<number>(0);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -42,7 +27,7 @@ export function Contacts() {
     ContactServices.create(createData)
       .then(() => {
         fetchData();
-        setCreateData({ id: 0, firstname: '', lastname: '', email: '', phone: '', birthDate: '' });
+        setCreateData(contactsDefaultValue);
         alert('Contact created successfully!');
       })
       .catch((err) => console.error('Error creating contact:', err));
@@ -70,11 +55,7 @@ export function Contacts() {
   const handleEditSelection = (contact: any) => {
     setSelectedContactId(contact.id);
     setUpdateData({
-      id: contact.id,
-      firstname: contact.firstname,
-      lastname: contact.lastname,
-      email: contact.email,
-      phone: contact.phone,
+      ...contact,
       birthDate: (contact.birthDate || contact.birthdate || '').split('T')[0]
     });
   };
