@@ -35,9 +35,15 @@ export default function Features() {
                         Discover the powerful features that make Codeflow AI your ultimate coding companion.
                     </span>
                     
-                    <span className="text-center text-gray-400 max-w-2xl mx-auto mb-12 sm:mb-16">
-                        Work Overflow
-                    </span>
+                    {features.map((feature, index) => (
+                        <div key={index} className={`flex ${feature.imagePosition === 'left' ? 'flex-row' : 'flex-row-reverse'} items-center mb-12`}>
+                            <img src={`/images/${feature.image}.png`} alt={feature.title} className="w-16 h-16 mr-4" />
+                            <div>
+                                <h3 className="text-xl font-semibold">{feature.title}</h3>
+                                <p className="text-gray-400">{feature.description}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
