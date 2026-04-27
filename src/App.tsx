@@ -17,7 +17,7 @@ function App() {
     lastname: '',
     email: '',
     phone: '',
-    birthdate: ''
+    birthDate: ''
 });
 
 const [updateData, setUpdateData] = useState<ContactViewModel>({
@@ -26,7 +26,7 @@ const [updateData, setUpdateData] = useState<ContactViewModel>({
     lastname: '',
     email: '',
     phone: '',
-    birthdate: ''
+    birthDate: ''
 });
 
     const [selectedContactId, setSelectedContactId] = useState<number>(0);
@@ -48,7 +48,7 @@ const [updateData, setUpdateData] = useState<ContactViewModel>({
         ContactServices.create(createData)
             .then(() => {
                 fetchData();
-                setCreateData({ id: 0, firstname: '', lastname: '', email: '', phone: '', birthdate: '' });
+                setCreateData({ id: 0, firstname: '', lastname: '', email: '', phone: '', birthDate: '' });
                 alert('Contact created successfully!');
             })
             .catch((err) => console.error('Error creating contact:', err));
@@ -75,7 +75,14 @@ const [updateData, setUpdateData] = useState<ContactViewModel>({
 
     const handleEditSelection = (contact: any) => {
         setSelectedContactId(contact.id);
-        setUpdateData(contact);
+        setUpdateData({
+        id: contact.id,
+        firstname: contact.firstname,
+        lastname: contact.lastname,
+        email: contact.email,
+        phone: contact.phone,
+        birthDate: (contact.birthDate || contact.birthdate || '').split('T')[0] 
+    });
     };
 
     return (
@@ -87,7 +94,7 @@ const [updateData, setUpdateData] = useState<ContactViewModel>({
             <div className="p-8">
                 <div className="text-xl font-bold mb-6">Contacts</div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-12">
                     {contacts.length > 0 ? (
                         contacts.map((contact: any) => (
                             <div 
@@ -138,6 +145,13 @@ const [updateData, setUpdateData] = useState<ContactViewModel>({
                                 value={createData.email}
                                 onChange={(e) => setCreateData({...createData, email: e.target.value})}
                             />
+                            <input
+                                type="date"
+                                className="bg-white w-full px-2 py-1 text-black rounded"
+                                placeholder="Birthday"
+                                value={createData.birthDate}
+                                onChange={(e) => setCreateData({...createData, birthDate: e.target.value})}
+                            />
                             <input 
                                 className="bg-white w-full px-2 py-1 text-black rounded"
                                 placeholder="Phone"
@@ -156,22 +170,33 @@ const [updateData, setUpdateData] = useState<ContactViewModel>({
                                 <div className="flex gap-2">
                                     <input 
                                         className="bg-white w-full px-2 py-1 text-black rounded"
+                                        placeholder="Firstname"
                                         value={updateData.firstname}
                                         onChange={(e) => setUpdateData({...updateData, firstname: e.target.value})}
                                     />
                                     <input 
                                         className="bg-white w-full px-2 py-1 text-black rounded"
+                                        placeholder="Lastname"
                                         value={updateData.lastname}
                                         onChange={(e) => setUpdateData({...updateData, lastname: e.target.value})}
                                     />
                                 </div>
                                 <input 
                                     className="bg-white w-full px-2 py-1 text-black rounded"
+                                    placeholder="Email"
                                     value={updateData.email}
                                     onChange={(e) => setUpdateData({...updateData, email: e.target.value})}
                                 />
+                                <input
+                                type="date"
+                                className="bg-white w-full px-2 py-1 text-black rounded"
+                                placeholder="Birthday"
+                                value={updateData.birthDate}
+                                onChange={(e) => setUpdateData({...updateData, birthDate: e.target.value})}
+                                />
                                 <input 
                                     className="bg-white w-full px-2 py-1 text-black rounded"
+                                    placeholder="Phone"
                                     value={updateData.phone}
                                     onChange={(e) => setUpdateData({...updateData, phone: e.target.value})}
                                 />
