@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.2.2",
+    "axios": "^1.15.2",
     "codeflow": "^1.1.0",
     "css": "^3.0.0",
     "react": "^19.2.4",
