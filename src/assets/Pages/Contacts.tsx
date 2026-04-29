@@ -23,8 +23,10 @@ export function Contacts() {
     fetchData();
   }, []);
 
+  // Create Record
   const createRecord = () => {
-    ContactServices.create(createData)
+    const { id, ...payload } = createData;
+    ContactServices.create(payload as any)
       .then(() => {
         fetchData();
         setCreateData(contactsDefaultValue);
@@ -69,9 +71,6 @@ export function Contacts() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-12">
           {contacts.length > 0 ? (
             contacts.map((contact: any) => (
-              // <div className="text-white">
-              //   <h3>{contact.firstname} {contact.lastname}</h3>
-              // </div>
               <div
                 key={contact.id}
                 onClick={() => handleEditSelection(contact)}

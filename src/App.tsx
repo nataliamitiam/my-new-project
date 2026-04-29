@@ -4,7 +4,7 @@ import Hero from "./assets/Pages/Hero";
 import Navbar from "./assets/Pages/Navbar";
 import Pricing from "./assets/Pages/Pricing";
 import Testimonials from "./assets/Pages/Testimonials";
-import { Organizations } from "./assets/Pages/Organizations";
+import { Organization } from "./assets/Pages/Organizations";
 import { Contacts } from "./assets/Pages/Contacts";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
             <Features />
 
             <Contacts />
-            <Organizations />
+            <Organization />
 
             <Pricing />
             <Testimonials />
