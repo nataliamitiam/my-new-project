@@ -1,0 +1,6 @@
+{
+  "APIBaseUrl": "https://localhost:7034",
+  "ReportsBaseUrl": "",
+  "appEnv": "development",
+  "build": "local-dev"
+}
