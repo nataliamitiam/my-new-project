@@ -8,4 +8,5 @@ export const api = {
     
     CONTACTS_ENDPOINT: '/api/contacts',
     ORGANIZATIONS_ENDPOINT: '/api/organizations',
+    PRODUCTS_ENDPOINT:'/api/products',
 }

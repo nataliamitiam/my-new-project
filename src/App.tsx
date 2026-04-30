@@ -6,6 +6,7 @@ import Pricing from "./assets/Pages/Pricing";
 import Testimonials from "./assets/Pages/Testimonials";
 import { Organization } from "./assets/Pages/Organizations";
 import { Contacts } from "./assets/Pages/Contacts";
+import { Products } from "./assets/Pages/Products";
 
 function App() {
 
@@ -17,7 +18,8 @@ function App() {
 
             <Contacts />
             <Organization />
-
+            <Products/>
+            
             <Pricing />
             <Testimonials />
             <Footer />
