@@ -7,6 +7,7 @@ import Testimonials from "./assets/Pages/Testimonials";
 import { Organization } from "./assets/Pages/Organizations";
 import { Contacts } from "./assets/Pages/Contacts";
 import { Products } from "./assets/Pages/Products";
+import { Category } from "./assets/Pages/Category"
 
 function App() {
 
@@ -15,11 +16,10 @@ function App() {
             <Navbar />
             <Hero />
             <Features />
-
             <Contacts />
             <Organization />
             <Products/>
-            
+            <Category />
             <Pricing />
             <Testimonials />
             <Footer />

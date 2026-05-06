@@ -31,20 +31,28 @@ export function Products() {
   const createRecord = async () => {
      const { id, ...payload } = createData;
 
-     try {
-        ProductsServices.create(payload as any)
-        .then(() => {
-            fetchData();
-            setCreateData(productsDefaultValue);
-            alert("Product Created Succesfull")
-        }).catch((err) => {
-            console.error(`Error:`, err)
-        })
-     } catch (err) {
-        console.error("Error Creating:", err)
-     } finally {
-        console.log(payload)
-     }
+     ProductsServices.create(payload as any)
+     .then(() => {
+      fetchData();
+      setCreateData(productsDefaultValue);
+      alert('Product Created!')
+     }).catch((err) => {
+      console.error('error Creating', err)
+     })
+    //  try {
+    //     ProductsServices.create(payload as any)
+    //     .then(() => {
+    //         fetchData();
+    //         setCreateData(productsDefaultValue);
+    //         alert("Product Created Succesfull")
+    //     }).catch((err) => {
+    //         console.error(`Error:`, err)
+    //     })
+    //  } catch (err) {
+    //     console.error("Error Creating:", err)
+    //  } finally {
+    //     console.log(payload)
+    //  }
     };
 
   // UPDATE
@@ -184,6 +192,15 @@ export function Products() {
           value={updateData.description}
           onChange={(e) =>
             setUpdateData({ ...updateData, description: e.target.value })
+          }
+        />
+
+        <input
+          className="bg-white w-full mb-2 px-2 py-1 text-black rounded"
+          placeholder="Category"
+          value={updateData.category}
+          onChange={(e) =>
+            setUpdateData({ ...updateData, category: e.target.value })
           }
         />
 

@@ -1,13 +1,13 @@
 export interface ProductsViewModel {
   id: number,
-    name: string,
+  name: string,
   description: string,
   category: string
 }
 
 export const productsDefaultValue: ProductsViewModel = {
   id: 0,
-    name: '',
+  name: '',
   description: '',
   category: '', 
 }
