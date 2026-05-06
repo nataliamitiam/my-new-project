@@ -11,6 +11,7 @@ export function Contacts() {
   const [selectedContactId, setSelectedContactId] = useState<number>(0);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  // Fetch Data
   const fetchData = async () => {
     ContactServices.get(1, 10)
       .then((res) => {
@@ -35,6 +36,7 @@ export function Contacts() {
       .catch((err) => console.error('Error creating contact:', err));
   };
 
+  // Update
   const updateRecord = (id: number) => {
     ContactServices.update(id, updateData)
       .then(() => {
@@ -44,6 +46,7 @@ export function Contacts() {
       .catch((err) => console.error('Error updating contact:', err));
   };
 
+   // Delete
   const deleteRecord = (id: number) => {
     ContactServices.delete(id)
       .then(() => {
