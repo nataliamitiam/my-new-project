@@ -9,12 +9,14 @@ import { Contacts } from "./assets/Pages/Contacts";
 import { Products } from "./assets/Pages/Products";
 import { Category } from "./assets/Pages/Category";
 import { Estimates } from "./assets/Pages/Estimates"
+import { Forms } from "./assets/Pages/Forms";
 
 function App() {
 
     return (
         <div className="py-4 bg-slate-950 text-white overflow-hidden">
             <Navbar />
+            <Forms />
             <Hero />
             <Features />
             <Contacts />

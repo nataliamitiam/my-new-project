@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { OrganizationServices } from "../../services/OrganizationServices";
+import { ItemBox } from "../../components/cards/ItemBox";
+import { FormsContainer } from "../../components/forms/FormsContainer";
 
 // simple default value
 const defaultOrganization = {
@@ -77,99 +79,63 @@ export function Organization() {
   return (
     <>
       {/* LIST */}
-      <div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {orgs.length > 0 ? (
           orgs.map((org: any) => (
-            <div
-              key={org.id}
-              className="border border-gray-300 rounded-lg p-4 mb-4"
-            >
-              <h3 className="text-xl font-bold mb-2">{org.name}</h3>
-              <p className="text-gray-600 mb-2">
-                Description: {org.description}
-              </p>
-
-              {/* ACTION BUTTONS */}
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    setUpdateData(org); // load data for update
-                  }}
-                  className="bg-blue-500 px-3 py-1 rounded text-white"
-                >
-                  Edit
-                </button>
-
-                <button
-                onClick={() => {setOrgsId(org.id),console.log(org.id),setShowDeleteConfirmation(true)}}
-                  className="bg-red-500 px-3 py-1 rounded text-white"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
+            <ItemBox key={org.id}
+              onClick={() => setUpdateData(org)}
+              onDelete={() => {
+                setOrgsId(org.id);
+                setShowDeleteConfirmation(true);
+              }}>
+                <h3 className="text-xl font-bold">{org.name}</h3>
+                <p className="text-white">{org.description}</p>
+            </ItemBox>
           ))
         ) : (
-          <p className="text-center text-gray-400">
+          <p className="text-center text-white">
             No organizations found.
           </p>
         )}
       </div>
 
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
       {/* CREATE FORM */}
-      <div className="bg-slate-900 p-6 rounded-xl border border-slate-600/50 mt-6">
-        <h3 className="text-lg font-bold mb-4 text-purple-400">
-          Create Organization
-        </h3>
+      <FormsContainer type="CreateData" title="Create Organization">
+        <input
+          className="bg-white w-full px-2 py-1 text-black rounded"
+          placeholder="Organization Name"
+          value={createData.name}
+          onChange={(e) => setCreateData({ ...createData, name: e.target.value })}
+        />
+        <input
+          className="bg-white w-full px-2 py-1 text-black rounded"
+          placeholder="Description"
+          value={createData.description}
+          onChange={(e) =>
+            setCreateData({
+              ...createData,
+              description: e.target.value,
+            })}
+        />
 
-        <div className="space-y-3">
-          <div className="flex gap-2">
-            <input
-              className="bg-white w-full px-2 py-1 text-black rounded"
-              placeholder="Organization Name"
-              value={createData.name}
-              onChange={(e) =>
-                setCreateData({ ...createData, name: e.target.value })
-              }
-            />
-
-            <input
-              className="bg-white w-full px-2 py-1 text-black rounded"
-              placeholder="Description"
-              value={createData.description}
-              onChange={(e) =>
-                setCreateData({
-                  ...createData,
-                  description: e.target.value,
-                })
-              }
-            />
-          </div>
-
-          <button
-            onClick={createRecord}
-            className="w-full bg-purple-500 py-2 rounded-md hover:bg-purple-600 font-bold"
-          >
+        <button
+          onClick={createRecord}
+          className="w-full bg-purple-500 py-2 rounded-md hover:bg-purple-600 font-bold">
             Submit Organization
-          </button>
-        </div>
-      </div>
+        </button>
+      </FormsContainer>
 
       {/* UPDATE FORM */}
-      <div className="bg-slate-800 p-6 rounded-xl border border-slate-600/50 mt-6">
-        <h3 className="text-lg font-bold mb-4 text-blue-400">
-          Update Organization
-        </h3>
-
-        <div className="space-y-3">
-          <input
-            className="bg-white w-full px-2 py-1 text-black rounded"
-            placeholder="Organization Name"
-            value={updateData.name}
-            onChange={(e) =>
-              setUpdateData({ ...updateData, name: e.target.value })
-            }
-          />
+      <FormsContainer type="UpdateData" title="Update Organization">
+        <input
+          className="bg-white w-full px-2 py-1 text-black rounded"
+          placeholder="Organization Name"
+          value={updateData.name}
+          onChange={(e) =>
+            setUpdateData({ ...updateData, name: e.target.value })
+          } />
 
           <input
             className="bg-white w-full px-2 py-1 text-black rounded"
@@ -179,25 +145,34 @@ export function Organization() {
               setUpdateData({
                 ...updateData,
                 description: e.target.value,
-              })
-            }
-          />
-
+              })} />
           <button
             onClick={() => updateRecord(updateData.id)}
-            className="w-full bg-blue-500 py-2 rounded-md hover:bg-blue-600 font-bold"
-          >
-            Update Organization
+            className="w-full bg-yellow-600 py-2 rounded-md hover:bg-yellow-700 font-bold text-black" >
+              Update Organization
           </button>
-        </div>
-      </div>
+      </FormsContainer>
+    </div>
 
-      {showDeleteConfirmation && (
+      {/* {showDeleteConfirmation && (
         <>
         <div>Are you sure to delete this? {orgsId}
         </div>
         <button onClick={() => deleteRecord(orgsId)}>Delete</button>
         </>
+      )} */}
+      {showDeleteConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-slate-900 p-6 rounded-lg border border-red-500 max-w-sm w-full space-y-1.5">
+            <div className="text-center mb-6">
+              Are you sure you want to delete this Organization?
+            </div>
+            <div className="flex justify-center gap-4">
+              <button onClick={() => setShowDeleteConfirmation(false)} className="px-4 py-1">Cancel</button>
+              <button onClick={() => deleteRecord(orgsId)} className="bg-red-500 px-6 py-1 rounded-md font-bold">Delete</button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

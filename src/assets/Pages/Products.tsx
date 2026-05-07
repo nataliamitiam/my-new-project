@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProductsServices } from "../../services/ProductsServices";
 import { productsDefaultValue } from "../../models/Products";
+import { ItemBox } from "../../components/cards/ItemBox";
 
 export function Products() {
   const [products, setProducts] = useState<any[]>([]);
@@ -39,20 +40,6 @@ export function Products() {
      }).catch((err) => {
       console.error('error Creating', err)
      })
-    //  try {
-    //     ProductsServices.create(payload as any)
-    //     .then(() => {
-    //         fetchData();
-    //         setCreateData(productsDefaultValue);
-    //         alert("Product Created Succesfull")
-    //     }).catch((err) => {
-    //         console.error(`Error:`, err)
-    //     })
-    //  } catch (err) {
-    //     console.error("Error Creating:", err)
-    //  } finally {
-    //     console.log(payload)
-    //  }
     };
 
   // UPDATE
@@ -91,40 +78,23 @@ export function Products() {
   return (
     <>
       {/* LIST */}
-      <div>
+      <div className="grid grid-cols-3 gap-5">
         {loading ? (
           <p className="text-center text-white-400">Loading...</p>
         ) : products.length > 0 ? (
           products.map((product) => (
-            <div
-              key={product.id}
-              className="border border-white-300 rounded-lg p-4 mb-4"
-            >
+            <ItemBox key={product.id}
+            onClick={() => setUpdateData(product)}
+            onDelete={() => {
+                setSelectedId(product.id);
+                setShowDelete(true)
+              }}>
               <h3 className="text-xl font-bold">{product.name}</h3>
-              <p className="text-white-600">{product.description}</p>
-
-              <div className="flex gap-2 mt-2">
-                <button
-                  onClick={() => setUpdateData(product)}
-                  className="bg-white-500 px-3 py-1 rounded text-white"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => {
-                    setSelectedId(product.id);
-                    setShowDelete(true);
-                  }}
-                  className="bg-red-500 px-3 py-1 rounded text-white"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
+              <p className="text-white">{product.description}</p>
+            </ItemBox>
           ))
         ) : (
-          <p className="text-center text-white-400">
+          <p className="text-center text-white">
             No products found.
           </p>
         )}

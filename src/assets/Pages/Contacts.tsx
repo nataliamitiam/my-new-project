@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { ContactServices } from "../../services/ContactServices";
 import { contactsDefaultValue, type ContactViewModel } from "../../models/Contacts";
+import { ItemBox } from "../../components/cards/ItemBox";
+import { FormsContainer } from "../../components/forms/FormsContainer";
+import { FormsButton } from "../../components/forms/FormsButton";
+import { InputText } from "../../components/forms/InputText";
 
 export function Contacts() {
 
@@ -67,44 +71,32 @@ export function Contacts() {
 
   return (
     <>
-      <div className="p-8">
-        <div className="text-xl font-bold mb-6">Contacts</div>
-
         {/* Contact List Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {contacts.length > 0 ? (
             contacts.map((contact: any) => (
-              <div
-                key={contact.id}
+              <ItemBox key={contact.id}
                 onClick={() => handleEditSelection(contact)}
-                className="bg-slate-800 p-4 rounded-lg cursor-pointer hover:ring-2 ring-purple-500 transition-all"
-              >
-                <h3 className="text-lg font-bold">{contact.firstname} {contact.lastname}</h3>
-                <p className="text-sm text-gray-400">{contact.email}</p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedContactId(contact.id);
-                    setShowDeleteConfirmation(true);
-                  }}
-                  className="rounded-full px-4 py-1 border border-white mt-3 text-xs hover:bg-red-500 hover:border-red-500 transition-colors"
-                >
-                  trash
-                </button>
-              </div>
+                onDelete={() => {
+                  setSelectedContactId(contact.id);
+                  setShowDeleteConfirmation(true);
+                }}>
+                <h3 className="text-xl font-bold">{contact.firstname} {contact.lastname}</h3>
+                <p className="text-white">{contact.email}</p>
+              </ItemBox>
             ))
           ) : (
-            <p className="text-gray-500">No contacts found.</p>
+            <p className="text-center text-whit">
+            No Contacts found.
+          </p>
           )}
         </div>
 
         {/* Forms Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Create Form */}
-          <div className="bg-slate-900 p-6 rounded-xl border border-slate-600/50">
-            <h3 className="text-lg font-bold mb-4 text-purple-400">Create Record</h3>
-            <div className="space-y-3">
-              <div className="flex gap-2">
+          <FormsContainer type="CreateData" title="Create Record">
+            <div className="flex gap-2">
                 <input
                   className="bg-white w-full px-2 py-1 text-black rounded"
                   placeholder="First Name"
@@ -117,88 +109,84 @@ export function Contacts() {
                   value={createData.lastname}
                   onChange={(e) => setCreateData({ ...createData, lastname: e.target.value })}
                 />
-              </div>
-              <input
-                className="bg-white w-full px-2 py-1 text-black rounded"
-                placeholder="Email"
-                value={createData.email}
-                onChange={(e) => setCreateData({ ...createData, email: e.target.value })}
-              />
-              <input
-                type="date"
-                className="bg-white w-full px-2 py-1 text-black rounded"
-                value={createData.birthDate}
-                onChange={(e) => setCreateData({ ...createData, birthDate: e.target.value })}
-              />
-              <input
-                className="bg-white w-full px-2 py-1 text-black rounded"
-                placeholder="Phone"
-                value={createData.phone}
-                onChange={(e) => setCreateData({ ...createData, phone: e.target.value })}
-              />
-              <button onClick={createRecord} className="w-full bg-purple-500 py-2 rounded-md hover:bg-purple-600 font-bold">
-                Submit New Contact
-              </button>
             </div>
-          </div>
+            <input
+              className="bg-white w-full px-2 py-1 text-black rounded"
+              placeholder="Email"
+              value={createData.email}
+              onChange={(e) => setCreateData({ ...createData, email: e.target.value })}
+            />
+            <input
+              type="date"
+              className="bg-white w-full px-2 py-1 text-black rounded"
+              value={createData.birthDate}
+              onChange={(e) => setCreateData({ ...createData, birthDate: e.target.value })}
+            />
+            <input
+              className="bg-white w-full px-2 py-1 text-black rounded"
+              placeholder="Phone"
+              value={createData.phone}
+              onChange={(e) => setCreateData({ ...createData, phone: e.target.value })}
+            />
+            <FormsButton type="Create" onClick={createRecord}>
+              Save
+            </FormsButton>
+          </FormsContainer>
 
           {/* Update Form */}
-          <div className="bg-slate-900 p-6 rounded-xl border border-yellow-600/50">
-            <h3 className="text-lg font-bold mb-4 text-yellow-500">Update Record: {updateData.firstname}</h3>
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  className="bg-white w-full px-2 py-1 text-black rounded"
-                  placeholder="Firstname"
-                  value={updateData.firstname}
-                  onChange={(e) => setUpdateData({ ...updateData, firstname: e.target.value })}
-                />
+          <FormsContainer type="UpdateData" title={`Update Record: ${updateData.firstname}`}>
+            <div className="flex gap-2">
+              <InputText
+                value={updateData.firstname}
+                onChange={(e: any) => setUpdateData({
+                  ...updateData, firstname: e.target.value
+                })} />
                 <input
                   className="bg-white w-full px-2 py-1 text-black rounded"
                   placeholder="Lastname"
                   value={updateData.lastname}
-                  onChange={(e) => setUpdateData({ ...updateData, lastname: e.target.value })}
-                />
-              </div>
-              <input
-                className="bg-white w-full px-2 py-1 text-black rounded"
-                placeholder="Email"
-                value={updateData.email}
-                onChange={(e) => setUpdateData({ ...updateData, email: e.target.value })}
-              />
-              <input
-                type="date"
-                className="bg-white w-full px-2 py-1 text-black rounded"
-                value={updateData.birthDate}
-                onChange={(e) => setUpdateData({ ...updateData, birthDate: e.target.value })}
-              />
-              <input
-                className="bg-white w-full px-2 py-1 text-black rounded"
-                placeholder="Phone"
-                value={updateData.phone}
-                onChange={(e) => setUpdateData({ ...updateData, phone: e.target.value })}
-              />
-              <div className="flex gap-2">
-                <button
-                  onClick={() => updateRecord(selectedContactId)}
-                  className="w-full bg-yellow-600 py-2 rounded-md hover:bg-yellow-700 font-bold text-black"
-                >
-                  Update Record
-                </button>
-              </div>
+                  onChange={(e) => setUpdateData({ ...updateData, lastname: e.target.value })} />
             </div>
-          </div>
+            <input
+              className="bg-white w-full px-2 py-1 text-black rounded"
+              placeholder="Email"
+              value={updateData.email}
+              onChange={(e) => setUpdateData({ ...updateData, email: e.target.value })} />
+            <input
+              type="date"
+              className="bg-white w-full px-2 py-1 text-black rounded"
+              value={updateData.birthDate}
+              onChange={(e) => setUpdateData({ ...updateData, birthDate: e.target.value })} />
+            <input
+              className="bg-white w-full px-2 py-1 text-black rounded"
+              placeholder="Phone"
+              value={updateData.phone}
+              onChange={(e) => setUpdateData({ ...updateData, phone: e.target.value })} />
+            <FormsButton type="Update"
+              onClick={() => updateRecord(selectedContactId)}>
+              Update
+            </FormsButton>
+          </FormsContainer>
         </div>
-      </div>
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirmation && (
+        // PopUp Delete {Delete Modal}
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-slate-900 p-6 rounded-lg border border-red-500 max-w-sm w-full">
-            <p className="text-center mb-6">Are you sure you want to delete this contact? {selectedContactId}</p>
+          <div className="bg-slate-900 p-6 rounded-lg border border-red-500 max-w-sm w-full space-y-1.5">
+            <div className="text-center mb-6">
+              Are you sure you want to delete this contact?
+              {/* title Parameter for Prop */}
+            </div>
             <div className="flex justify-center gap-4">
-              <button onClick={() => setShowDeleteConfirmation(false)} className="px-4 py-1">Cancel</button>
-              <button onClick={() => deleteRecord(selectedContactId)} className="bg-red-500 px-6 py-1 rounded-md font-bold">Delete</button>
+              <button onClick={() => 
+                setShowDeleteConfirmation(false)
+                // onClose Prop
+                } className="px-4 py-1">Cancel</button>
+              <button onClick={() => 
+                deleteRecord(selectedContactId)
+                // DeleteRecord Prop
+              } className="bg-red-500 px-6 py-1 rounded-md font-bold">Delete</button>
             </div>
           </div>
         </div>

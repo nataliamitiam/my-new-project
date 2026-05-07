@@ -69,8 +69,7 @@ export function Category() {
   return (
     <>
       {/* LIST */}
-      <div>
-        This is Category
+      <div className="grid grid-cols-3 gap-5">
         {category.length > 0 ? (
           category.map((category) => {
             return (
@@ -108,7 +107,7 @@ export function Category() {
             </div>
           )})
         ) : (
-          <p className="text-center text-gray-400">
+          <p className="text-center text-white">
             No category found.
           </p>
         )}
