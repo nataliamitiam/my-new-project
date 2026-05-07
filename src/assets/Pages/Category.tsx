@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { CategoryServices } from "../../services/CategoryServices";
 import { categoryDefaultValue, type CategoryViewModel } from "../../models/Category";
 
-
 export function Category() {
   const [category, setCategory] = useState<any[]>([]);
   const [createData, setCreateData] = useState<CategoryViewModel>(categoryDefaultValue);
@@ -10,7 +9,7 @@ export function Category() {
   const [updateData, setUpdateData] = useState<CategoryViewModel>(categoryDefaultValue);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  // FETCH
+  // Fetch Data
   const fetchData = async () => {
    CategoryServices.get(1, 10)
    .then((res) => {
@@ -23,7 +22,7 @@ export function Category() {
     fetchData();
   }, []);
 
-  // CREATE
+   // Create Record
   const createRecord = () => {
       const { id, ...payload } = createData;
       CategoryServices.create(payload as any)
@@ -37,7 +36,7 @@ export function Category() {
       ));
   };
 
-  // UPDATE
+   // Update
   const updateRecord = (id: number) => {
     CategoryServices.update(id, updateData)
     .then(() => {
@@ -48,7 +47,7 @@ export function Category() {
     })
   };
 
-  // DELETE
+ // Delete
   const deleteRecord = async (id: number) => {
     try {
       await CategoryServices.delete(id);

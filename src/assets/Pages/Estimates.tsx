@@ -1,33 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EstimatesServices } from "../../services/EstimatesServices";
-import { estimatesDefaultValue, type EstimatesViewModel } from "../../models/Estimates";
+import {
+  estimatesDefaultValue,
+  type EstimatesViewModel,
+} from "../../models/Estimates";
 
 export function Estimates() {
   const [estimates, setEstimates] = useState<EstimatesViewModel[]>([]);
-  const [createData, setCreateData] = useState<EstimatesViewModel>(estimatesDefaultValue);
-  const [,setselectId] = newFunction();
-  const [updateData, setUpdateData] = useState<EstimatesViewModel>(estimatesDefaultValue);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState<number>(0);
+  const [createData, setCreateData] =
+    useState<EstimatesViewModel>(estimatesDefaultValue);
+  const [updateData, setUpdateData] =
+    useState<EstimatesViewModel>(estimatesDefaultValue);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] =
+    useState(false);
 
-  // Fetch Data
+  // FETCH DATA
   const fetchData = async () => {
-      EstimatesServices.get(1, 10)
-        .then((res) => {
-          setEstimates(res.data || []);
-        })
-        .catch((err) => console.error('Error fetching data:', err));
-    };
-  
+    try {
+      const res = await EstimatesServices.get(1, 10);
+      setEstimates(res.data || []);
+    } catch (err) {
+      console.error("Error fetching estimates:", err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Create Record
+  // CREATE
   const createRecord = async () => {
     try {
       const { id, ...payload } = createData;
-      EstimatesServices.create(payload as any);
-      fetchData();
+      await EstimatesServices.create(payload as any);
+      await fetchData();
       setCreateData(estimatesDefaultValue);
       alert("Estimate created successfully!");
     } catch (err) {
@@ -35,161 +42,266 @@ export function Estimates() {
     }
   };
 
-  // Update
-   const updateRecord = (id: number) => {
-     EstimatesServices.update(id, updateData)
-        .then(() => {
-          fetchData();
-          alert('Estimates updated successfully!');
-        })
-        .catch((err) => console.error('Error updating contact:', err));
-    };
-  
-  // Delete
-   const deleteRecord = (id: number) => {
-      EstimatesServices.delete(id)
-        .then(() => {
-          fetchData();
-          setShowDeleteConfirmation(false);
-          alert('Estimates deleted successfully!');
-        })
-        .catch((err) => console.error('Error deleting contact:', err));
-    };
+  // EDIT SELECT
+  const handleEdit = (estimate: EstimatesViewModel) => {
+    setSelectedId(estimate.id);
+    setUpdateData(estimate);
+  };
 
-  const handleEditSelection = (estimates: any) => {
-    setselectId(estimates);
-    setUpdateData({
-      ...estimates,
-      birthDate: (estimates.birthDate || estimates.birthdate || '').split('T')[0]
-    });
+  // UPDATE
+  const updateRecord = async () => {
+    try {
+      await EstimatesServices.update(selectedId, updateData);
+      await fetchData();
+      setUpdateData(estimatesDefaultValue);
+      setSelectedId(0);
+      alert("Estimate updated successfully!");
+    } catch (err) {
+      console.error("Error updating estimate:", err);
+    }
+  };
+
+  // DELETE
+  const deleteRecord = async () => {
+    try {
+      await EstimatesServices.delete(selectedId);
+      await fetchData();
+      setShowDeleteConfirmation(false);
+      setSelectedId(0);
+      alert("Estimate deleted successfully!");
+    } catch (err) {
+      console.error("Error deleting estimate:", err);
+      alert("Failed to delete estimate.");
+    }
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-bold mb-6">Estimates</h1>
-
-      {/* LIST */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-12">
-        {estimates.length ? (
-          estimates.map((item) => (
+    <div className="p-6 space-y-6">
+      {/*LIST*/}
+      <div>
+        <h1 className="text-2xl font-bold mb-4">Estimates</h1>
+      {estimates.length > 0 ? (
+          estimates.map((estimate) => (
             <div
-              key={item.id}
-              onClick={() => handleEditSelection(item)}
-              className="bg-slate-800 p-4 rounded-lg cursor-pointer hover:ring-2 ring-purple-500"
+              key={estimate.id}
+              className="border border-gray-300 rounded-lg p-4 mb-4"
             >
-              <h3 className="font-bold">{item.name}</h3>
-              <p className="text-sm text-gray-400">{item.description}</p>
+              <h3 className="text-xl font-bold">{estimate.name}</h3>
 
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setselectId(item.id);
-                  setShowDeleteConfirmation(true);
-                }}
-                className="mt-3 text-xs border px-3 py-1 rounded hover:bg-red-500"
-              >
-                Delete
-              </button>
+              <p className="text-gray-600">
+                Description: {estimate.description}
+              </p>
+
+              <p className="text-gray-600">
+                Amount: {estimate.amount}
+              </p>
+
+              <p className="text-gray-600">
+                Start Date: {estimate.startDate}
+              </p>
+
+              <p className="text-gray-600">
+                End Date: {estimate.endDate}
+              </p>
+
+              {/* ACTION BUTTONS */}
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={() => handleEdit(estimate)}
+                  className="bg-blue-500 px-3 py-1 rounded text-white"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => {
+                    setSelectedId(estimate.id);
+                    setShowDeleteConfirmation(true);
+                  }}
+                  className="bg-red-500 px-3 py-1 rounded text-white"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         ) : (
-          <p>No estimates found.</p>
+          <p className="text-gray-400">No estimates found.</p>
         )}
       </div>
 
-      {/* Forms Section */}
-      <div className="grid md:grid-cols-2 gap-10">
-        {/* CREATE form */}
-        <div className="bg-slate-900 p-6 rounded-xl">
-          <h3 className="text-purple-400 font-bold mb-4">Create</h3>
+      {/*CREATE FORM*/}
+      <div className="bg-slate-900 p-6 rounded-xl border border-slate-600/50">
+        <h3 className="text-lg font-bold mb-4 text-purple-400">
+          Create Estimate
+        </h3>
 
+        <div className="space-y-3">
           <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
             placeholder="Name"
             value={createData.name}
-            onChange={(e) => setCreateData({ ...createData, name: e.target.value })}
+            onChange={(e) =>
+              setCreateData({
+                ...createData,
+                name: e.target.value,
+              })
+            }
           />
+
           <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
             placeholder="Description"
             value={createData.description}
-            onChange={(e) => setCreateData({ ...createData, description: e.target.value })}
+            onChange={(e) =>
+              setCreateData({
+                ...createData,
+                description: e.target.value,
+              })
+            }
           />
 
-            <input type="number"
-          placeholder="Amount"
-          value={updateData.amount}
-          onChange={(e) => setUpdateData({...updateData, amount: Number(e.target.value),
-    })
-  }
-/>
-            <input
-            placeholder="Start Date"
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            type="number"
+            placeholder="Amount"
+            value={createData.amount}
+            onChange={(e) =>
+              setCreateData({
+                ...createData,
+                amount: Number(e.target.value),
+              })
+            }
+          />
+
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            type="date"
             value={createData.startDate}
-            onChange={(e) => setCreateData({ ...createData, startDate: e.target.value })}
+            onChange={(e) =>
+              setCreateData({
+                ...createData,
+                startDate: e.target.value,
+              })
+            }
           />
-        
-            <input
-            placeholder="End Date"
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            type="date"
             value={createData.endDate}
-            onChange={(e) => setCreateData({ ...createData, endDate: e.target.value })}
+            onChange={(e) =>
+              setCreateData({
+                ...createData,
+                endDate: e.target.value,
+              })
+            }
           />
-
-          <button onClick={createRecord}>Create</button>
-        </div>
-
-        {/* UPDATE */}
-        <div className="bg-slate-900 p-6 rounded-xl">
-          <h3 className="text-yellow-400 font-bold mb-4">Update</h3>
-
-          <input
-            placeholder="Name"
-            value={updateData.name}
-            onChange={(e) => setUpdateData({ ...updateData, name: e.target.value })}
-          />
-          <input
-            placeholder="Description"
-            value={updateData.description}
-            onChange={(e) => setUpdateData({ ...updateData, description: e.target.value })}
-          />
-         <input type="number"
-          placeholder="Amount"
-          value={updateData.amount}
-          onChange={(e) => setUpdateData({
-      ...updateData, amount: Number(e.target.value),
-    })
-  }
-/>
-
-          <input
-            placeholder="Start Date"
-            value={updateData.startDate}
-            onChange={(e) => setUpdateData({ ...updateData, startDate: e.target.value })}
-          />
-          
-          <input
-            placeholder="End Date"
-            value={updateData.endDate}
-            onChange={(e) => setUpdateData({ ...updateData, endDate: e.target.value })}
-          />
-
           <button
-          onClick={() => updateRecord}>Update</button>
+            onClick={createRecord}
+            className="w-full bg-purple-500 py-2 rounded-md hover:bg-purple-600 font-bold"
+          >
+            Create
+          </button>
         </div>
       </div>
 
-      {/* DELETE MODAL */}
+      {/*UPDATE FORM*/}
+      <div className="bg-slate-800 p-6 rounded-xl border border-slate-600/50">
+        <h3 className="text-lg font-bold mb-4 text-blue-400">
+          Update Estimate
+        </h3>
+
+        <div className="space-y-3">
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            placeholder="Name"
+            value={updateData.name}
+            onChange={(e) =>
+              setUpdateData({
+                ...updateData,
+                name: e.target.value,
+              })
+            }
+          />
+
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            placeholder="Description"
+            value={updateData.description}
+            onChange={(e) =>
+              setUpdateData({
+                ...updateData,
+                description: e.target.value,
+              })
+            }
+          />
+         <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            type="number"
+            placeholder="Amount"
+            value={updateData.amount}
+            onChange={(e) =>
+              setUpdateData({
+                ...updateData,
+                amount: Number(e.target.value),
+              })
+            }
+          />
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            type="date"
+            value={updateData.startDate}
+            onChange={(e) =>
+              setUpdateData({
+                ...updateData,
+                startDate: e.target.value,
+              })
+            }
+          />
+          <input
+            className="bg-white w-full px-2 py-1 text-black rounded"
+            type="date"
+            value={updateData.endDate}
+            onChange={(e) =>
+              setUpdateData({
+                ...updateData,
+                endDate: e.target.value,
+              })
+            }
+          />
+          <button
+            onClick={updateRecord}
+            className="w-full bg-blue-500 py-2 rounded-md hover:bg-blue-600 font-bold"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+
+      {/*DELETE MODAL*/}
       {showDeleteConfirmation && (
         <div className="fixed inset-0 flex justify-center items-center bg-black/50">
-          <div className="bg-white p-5 rounded">
+          <div className="bg-white p-5 rounded-lg space-y-4">
             <p>Delete this estimate?</p>
-            <button onClick={() => deleteRecord}>Yes</button>
-            <button onClick={() => setShowDeleteConfirmation(false)}>No</button>
+
+            <div className="flex gap-2">
+              <button
+                onClick={deleteRecord}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Yes
+              </button>
+
+              <button
+                onClick={() => setShowDeleteConfirmation(false)}
+                className="bg-gray-300 px-4 py-2 rounded"
+              >
+                No
+              </button>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
-
-  function newFunction(): [any, any] {
-    return useState<number>(0);
-  }
 }
