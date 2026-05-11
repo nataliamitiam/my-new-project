@@ -11,7 +11,6 @@ export function Contacts() {
   const [contacts, setContacts] = useState<any[]>([]);
   const [createData, setCreateData] = useState<ContactViewModel>(contactsDefaultValue);
   const [updateData, setUpdateData] = useState<ContactViewModel>(contactsDefaultValue);
-
   const [selectedContactId, setSelectedContactId] = useState<number>(0);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -86,7 +85,7 @@ export function Contacts() {
               </ItemBox>
             ))
           ) : (
-            <p className="text-center text-whit">
+            <p className="text-center text-white">
             No Contacts found.
           </p>
           )}
@@ -129,7 +128,7 @@ export function Contacts() {
               onChange={(e) => setCreateData({ ...createData, phone: e.target.value })}
             />
             <FormsButton type="Create" onClick={createRecord}>
-              Save
+              Save Contact
             </FormsButton>
           </FormsContainer>
 
@@ -137,6 +136,7 @@ export function Contacts() {
           <FormsContainer type="UpdateData" title={`Update Record: ${updateData.firstname}`}>
             <div className="flex gap-2">
               <InputText
+                placeholder="First Name"
                 value={updateData.firstname}
                 onChange={(e: any) => setUpdateData({
                   ...updateData, firstname: e.target.value

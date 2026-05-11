@@ -4,7 +4,6 @@ interface Props {
     children?: React.ReactNode;
     key?: number;
 }
-
 export const ItemBox:React.FC<Props> = ({onClick, onDelete, children, key}) => {
     return (
     <>

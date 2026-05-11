@@ -4,11 +4,6 @@ import Hero from "./assets/Pages/Hero";
 import Navbar from "./assets/Pages/Navbar";
 import Pricing from "./assets/Pages/Pricing";
 import Testimonials from "./assets/Pages/Testimonials";
-import { Organization } from "./assets/Pages/Organizations";
-import { Contacts } from "./assets/Pages/Contacts";
-import { Products } from "./assets/Pages/Products";
-import { Category } from "./assets/Pages/Category";
-import { Estimates } from "./assets/Pages/Estimates"
 import { Forms } from "./assets/Pages/Forms";
 
 function App() {
@@ -19,11 +14,6 @@ function App() {
             <Forms />
             <Hero />
             <Features />
-            <Contacts />
-            <Organization />
-            <Products/>
-            <Category />
-            <Estimates/>
             <Pricing />
             <Testimonials />
             <Footer />

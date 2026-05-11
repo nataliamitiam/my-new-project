@@ -4,12 +4,15 @@ import { Contacts } from "./Contacts";
 import { Organization } from "./Organizations";
 import { Products } from "./Products";
 import { Category } from "./Category";
+import { Estimates } from "./Estimates";
 
 const tabs = [
     { title: "Contacts", element: <Contacts/> },
     { title: "Organizations", element: <Organization /> },
     { title: "Products", element: <Products /> },
-    { title: "Category", element: <Category /> }
+    { title: "Category", element: <Category /> },
+    { title: "Estimates", element: <Estimates /> }
+
 ]
 
 export const Forms = () => {
@@ -19,7 +22,7 @@ export const Forms = () => {
 
     return (
     <div className="flex justify-center py-8">
-        <div className="w-3/4">
+        <div className="w-full">
             <div className="bg-white/5 backdrop-blur-xl rounder-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl border border-white/10 relative">
                 <div className="bg-gradient-to-br from-gray-900/20 to-gray-800/20 backdrop-blur-small rounded-lg overflow-hidden h-full w-full border border-white/5">
                     <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-white/5 backdrop-blur-sm border-b border-white/10">
